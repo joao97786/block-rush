@@ -49,77 +49,6 @@
             animation: flicker 3s infinite alternate;
         }
 
-        #name-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            background: rgba(10, 10, 20, 0.85);
-            padding: 40px;
-            border: 3px solid var(--neon-blue);
-            border-radius: 16px;
-            box-shadow: 
-                0 0 15px rgba(0, 243, 255, 0.3),
-                inset 0 0 15px rgba(0, 243, 255, 0.2);
-            backdrop-filter: blur(8px);
-            width: 380px;
-        }
-
-        #name-screen h2 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
-            letter-spacing: 2px;
-            color: #e0e0ff;
-            text-align: center;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-        }
-
-        #name-screen input {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            font-family: inherit;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid var(--neon-blue);
-            border-radius: 8px;
-            color: var(--neon-blue);
-            text-align: center;
-            letter-spacing: 1px;
-            box-sizing: border-box;
-        }
-
-        #name-screen input::placeholder {
-            color: rgba(0, 243, 255, 0.5);
-        }
-
-        #name-screen input:focus {
-            outline: none;
-            box-shadow: 0 0 15px var(--neon-blue);
-        }
-
-        .btn-name {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            font-family: inherit;
-            cursor: pointer;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            text-shadow: 0 0 5px var(--neon-green);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-name:hover {
-            background: var(--neon-green);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-green);
-            text-shadow: none;
-        }
-
         #menu {
             display: flex;
             flex-direction: column;
@@ -134,8 +63,6 @@
                 inset 0 0 15px rgba(0, 243, 255, 0.2);
             backdrop-filter: blur(8px);
             width: 380px;
-            max-height: 80vh;
-            overflow-y: auto;
         }
 
         #menu h2 {
@@ -145,13 +72,6 @@
             color: #e0e0ff;
             text-align: center;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-        }
-
-        #player-name {
-            font-size: 14px;
-            color: var(--neon-green);
-            margin-bottom: 10px;
-            text-shadow: 0 0 5px var(--neon-green);
         }
 
         .btn-menu {
@@ -201,35 +121,6 @@
             color: #fff;
             box-shadow: 0 0 20px var(--neon-red);
             text-shadow: none;
-        }
-
-        #ranking-section {
-            width: 100%;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(0, 243, 255, 0.3);
-        }
-
-        #ranking-section h3 {
-            font-size: 14px;
-            color: var(--neon-yellow);
-            margin: 0 0 10px 0;
-            text-align: center;
-            text-shadow: 0 0 5px var(--neon-yellow);
-        }
-
-        .ranking-entry {
-            font-size: 12px;
-            padding: 8px;
-            background: rgba(0, 0, 0, 0.4);
-            border-left: 3px solid var(--neon-pink);
-            margin-bottom: 5px;
-            border-radius: 4px;
-            color: #e0e0ff;
-        }
-
-        .ranking-entry strong {
-            color: var(--neon-pink);
         }
 
         #game-container {
@@ -373,24 +264,11 @@
 
     <h1 id="mainTitle">BLOCK RUSH</h1>
 
-    <div id="name-screen">
-        <h2>BEM-VINDO!</h2>
-        <p style="color: #e0e0ff; margin: 0 0 15px 0; font-size: 14px;">QUAL É O TEU NOME, JOGADOR?</p>
-        <input type="text" id="player-input" placeholder="Digite seu nome..." maxlength="15">
-        <button class="btn-name" onclick="saveName()">ENTRAR</button>
-    </div>
-
     <div id="menu">
         <h2>ESCOLHE A INTENSIDADE:</h2>
-        <p id="player-name"></p>
         <button class="btn-menu btn-facil" onclick="startGame('Facil')">FÁCIL</button>
         <button class="btn-menu btn-medio" onclick="startGame('Medio')">MÉDIO</button>
         <button class="btn-menu btn-dificil" onclick="startGame('Dificil')">DIFÍCIL</button>
-        
-        <div id="ranking-section">
-            <h3>🏆 TOP 10 RANKING 🏆</h3>
-            <div id="ranking-list"></div>
-        </div>
     </div>
 
     <div id="game-container">
@@ -408,86 +286,6 @@
     </div>
 
     <script>
-        // SISTEMA DE NOME E RANKING
-        function saveName() {
-            let nameInput = document.getElementById('player-input').value.trim();
-            if (nameInput === '') {
-                alert('Digite um nome!');
-                return;
-            }
-            localStorage.setItem('playerName', nameInput);
-            document.getElementById('name-screen').style.display = 'none';
-            document.getElementById('menu').style.display = 'flex';
-            loadMenu();
-        }
-
-        function getPlayerName() {
-            let name = localStorage.getItem('playerName');
-            return name || null;
-        }
-
-        function loadMenu() {
-            let name = getPlayerName();
-            if (name) {
-                document.getElementById('player-name').textContent = `Jogador: ${name}`;
-            }
-            loadRanking();
-        }
-
-        function saveScore(playerName, difficulty, score, waves) {
-            let ranking = JSON.parse(localStorage.getItem('blockRushRanking') || '[]');
-            
-            ranking.push({
-                name: playerName,
-                score: score,
-                difficulty: difficulty,
-                waves: waves,
-                date: new Date().toLocaleDateString('pt-PT')
-            });
-
-            ranking.sort((a, b) => b.score - a.score);
-            ranking = ranking.slice(0, 10);
-
-            localStorage.setItem('blockRushRanking', JSON.stringify(ranking));
-        }
-
-        function loadRanking() {
-            let ranking = JSON.parse(localStorage.getItem('blockRushRanking') || '[]');
-            let rankingList = document.getElementById('ranking-list');
-            rankingList.innerHTML = '';
-
-            if (ranking.length === 0) {
-                rankingList.innerHTML = '<p style="color: #aaa; font-size: 12px; text-align: center;">Sem pontuações ainda...</p>';
-                return;
-            }
-
-            ranking.slice(0, 10).forEach((entry, idx) => {
-                let medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
-                let diffColor = entry.difficulty === 'Facil' ? 'var(--neon-green)' : 
-                                entry.difficulty === 'Medio' ? 'var(--neon-yellow)' : 
-                                'var(--neon-red)';
-                
-                let entry_html = `<div class="ranking-entry">
-                    ${medal} <strong>${entry.name}</strong> - ${entry.score}pt [${entry.difficulty}] (${entry.waves} ondas)
-                </div>`;
-                rankingList.innerHTML += entry_html;
-            });
-        }
-
-        // INICIALIZAÇÃO
-        if (getPlayerName()) {
-            document.getElementById('name-screen').style.display = 'none';
-            document.getElementById('menu').style.display = 'flex';
-            loadMenu();
-        } else {
-            document.getElementById('name-screen').style.display = 'flex';
-            document.getElementById('menu').style.display = 'none';
-        }
-
-        document.getElementById('player-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') saveName();
-        });
-
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const menu = document.getElementById('menu');
@@ -1585,10 +1383,7 @@
             stopVictoryMusic();
             playSound('gameover');
 
-            let playerName = getPlayerName();
-            saveScore(playerName, difficulty, score, dragonWave);
-
-            let waveInfo = dragonWave > 0 ? `<br>DRAGÕES VENCIDOS: <span style="color: var(--neon-purple);">${dragonWave}</span>` : '';
+            let waveInfo = dragonWave > 0 ? `<br>DRAGÕES DERROTADOS: <span style="color: var(--neon-purple);">${dragonWave}</span>` : '';
             finalScoreText.innerHTML = `PONTUAÇÃO FINAL:<br><span style="font-size: 38px; font-weight:900; color:#00f3ff; text-shadow: 0 0 10px #00f3ff;">${score} PONTOS</span><br><br>NA DIFICULDADE: <span style="color: #ffeb3b;">${difficulty.toUpperCase()}</span>${waveInfo}`;
             gameOverScreen.style.display = 'block';
         }
@@ -1599,7 +1394,6 @@
             menu.style.display = 'flex';
             stopBossMusic();
             stopVictoryMusic();
-            loadRanking();
         }
     </script>
 </body>
